@@ -1,19 +1,23 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
-using WebApi.Models;
-using WebApi.Repositories;
+using Services.Contracts;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace WebApi.Controllers
+namespace Presentation.Controllers
 {
-    [Route("api/[controller]")]
     [ApiController]
+    [Route("api/books")]
     public class ProductController : ControllerBase
     {
-        private readonly RepositoryContext _context;
+        private readonly IServiceManager _manager;
 
-        public ProductController(RepositoryContext context)
+        public ProductController(IServiceManager manager)
         {
-            _context = context;
+            _manager = manager;
         }
 
         [HttpGet]
@@ -21,7 +25,7 @@ namespace WebApi.Controllers
         {
             try
             {
-                var products = _context.Products.ToList();
+                var products = _manager.ProductService.GetAllProducts(false);
                 return Ok(products);
             }
             catch (Exception ex)
@@ -33,11 +37,11 @@ namespace WebApi.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetOneProducts([FromRoute(Name = "id")] int id)
+        public IActionResult GetByIdProduct([FromRoute(Name = "id")] int id)
         {
             try
             {
-                var product = _context.Products.Where(p => p.Id.Equals(id)).SingleOrDefault();
+                var product = _manager.ProductService.GetById(id, false);
 
                 if (product is null)
                 {
@@ -60,8 +64,8 @@ namespace WebApi.Controllers
                 {
                     return BadRequest();
                 }
-                _context.Products.Add(product);
-                _context.SaveChanges();
+                _manager.ProductService.CreateProduct(product);
+
                 return StatusCode(201, product);
             }
             catch (Exception ex)
@@ -75,23 +79,14 @@ namespace WebApi.Controllers
         {
             try
             {
-                var result = _context.Products.Where(p => p.Id.Equals(id)).SingleOrDefault();
-
-                if (result is null)
-                {
-                    return NotFound(); //404 Status code
-                }
-
-                if (id != product.Id)
+                if (product is null)
                 {
                     return BadRequest(); //400 Status code
                 }
 
-                result.Title = product.Title;
-                result.Price = product.Price;
+                _manager.ProductService.UpdateProduct(id, product, true);
 
-                _context.SaveChanges();
-                return Ok(product);
+                return NoContent(); //204 Status code
             }
             catch (Exception ex)
             {
@@ -100,18 +95,11 @@ namespace WebApi.Controllers
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteProducts([FromRoute(Name = "id")] int id)
+        public IActionResult DeleteProduct([FromRoute(Name = "id")] int id)
         {
             try
             {
-                var result = _context.Products.Where(p => p.Id.Equals(id)).SingleOrDefault();
-                if (result is null)
-                {
-                    return NotFound(); //404 Status code
-                }
-
-                _context.Products.Remove(result);
-                _context.SaveChanges();
+                _manager.ProductService.DeleteProduct(id, false);
                 return NoContent();
 
             }
