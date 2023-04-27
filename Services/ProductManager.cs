@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Entities.Exceptions;
+using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
 using System;
@@ -12,18 +13,16 @@ namespace Services
     public class ProductManager : IProductService
     {
         private readonly IRepositoryManager _manager;
+        private readonly ILoggerService _logger;
 
-        public ProductManager(IRepositoryManager manager)
+        public ProductManager(IRepositoryManager manager, ILoggerService logger)
         {
             _manager = manager;
+            _logger = logger;
         }
 
         public Product CreateProduct(Product product)
         {
-            if (product is null)
-            {
-                throw new ArgumentNullException(nameof(product));
-            }
             _manager.Product.CreateProduct(product);
             _manager.Save();
             return product;
@@ -34,7 +33,7 @@ namespace Services
             var result = _manager.Product.GetById(id, trackChanges);
             if (result is null)
             {
-                throw new Exception($"Product with id:{id} could not found.");
+                throw new ProductNotFoundException(id);
             }
 
             _manager.Product.DeleteProduct(result);
@@ -48,7 +47,12 @@ namespace Services
 
         public Product GetById(int id, bool trackChanges)
         {
-            return _manager.Product.GetById(id, trackChanges);
+            var product =  _manager.Product.GetById(id, trackChanges);
+            if (product is null)
+            {
+                throw new ProductNotFoundException(id);
+            }
+            return product;
         }
 
         public void UpdateProduct(int id, Product product, bool trackChanges)
@@ -56,11 +60,7 @@ namespace Services
             var result = _manager.Product.GetById(id, trackChanges);
             if (result is null)
             {
-                throw new Exception($"Product with id:{id} could not found.");
-            }
-            if (product is null)
-            {
-                throw new ArgumentNullException(nameof(product));
+                throw new ProductNotFoundException(id);
             }
 
             result.Title=product.Title;

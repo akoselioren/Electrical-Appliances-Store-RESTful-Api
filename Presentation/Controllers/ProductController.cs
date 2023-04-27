@@ -1,4 +1,5 @@
-﻿using Entities.Models;
+﻿using Entities.Exceptions;
+using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
 using System;
@@ -10,7 +11,7 @@ using System.Threading.Tasks;
 namespace Presentation.Controllers
 {
     [ApiController]
-    [Route("api/books")]
+    [Route("api/products")]
     public class ProductController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -23,91 +24,50 @@ namespace Presentation.Controllers
         [HttpGet]
         public IActionResult GetAllProducts()
         {
-            try
-            {
-                var products = _manager.ProductService.GetAllProducts(false);
-                return Ok(products);
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
+            var products = _manager.ProductService.GetAllProducts(false);
+            return Ok(products);
 
         }
 
         [HttpGet("{id:int}")]
         public IActionResult GetByIdProduct([FromRoute(Name = "id")] int id)
         {
-            try
-            {
-                var product = _manager.ProductService.GetById(id, false);
+            var product = _manager.ProductService.GetById(id, false);
 
-                if (product is null)
-                {
-                    return NotFound();
-                }
-                return Ok(product);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            
+            return Ok(product);
         }
 
         [HttpPost]
         public IActionResult CreateProduct([FromBody] Product product)
         {
-            try
+            if (product is null)
             {
-                if (product is null)
-                {
-                    return BadRequest();
-                }
-                _manager.ProductService.CreateProduct(product);
+                return BadRequest();
+            }
+            _manager.ProductService.CreateProduct(product);
 
-                return StatusCode(201, product);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+            return StatusCode(201, product);
         }
 
         [HttpPut("{id:int}")]
         public IActionResult UpdateProduct([FromRoute(Name = "id")] int id, [FromBody] Product product)
         {
-            try
+            if (product is null)
             {
-                if (product is null)
-                {
-                    return BadRequest(); //400 Status code
-                }
-
-                _manager.ProductService.UpdateProduct(id, product, true);
-
-                return NoContent(); //204 Status code
+                return BadRequest(); //400 Status code
             }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
+
+            _manager.ProductService.UpdateProduct(id, product, true);
+
+            return NoContent(); //204 Status code
         }
 
         [HttpDelete("{id:int}")]
         public IActionResult DeleteProduct([FromRoute(Name = "id")] int id)
         {
-            try
-            {
-                _manager.ProductService.DeleteProduct(id, false);
-                return NoContent();
-
-            }
-            catch (Exception ex)
-            {
-
-                throw new Exception(ex.Message);
-            }
+            _manager.ProductService.DeleteProduct(id, false);
+            return NoContent();
         }
     }
 }
