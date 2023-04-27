@@ -1,4 +1,5 @@
-﻿using Entities.Exceptions;
+﻿using Entities.DTOs;
+using Entities.Exceptions;
 using Entities.Models;
 using Microsoft.AspNetCore.Mvc;
 using Services.Contracts;
@@ -51,14 +52,14 @@ namespace Presentation.Controllers
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult UpdateProduct([FromRoute(Name = "id")] int id, [FromBody] Product product)
+        public IActionResult UpdateProduct([FromRoute(Name = "id")] int id, [FromBody] ProductDtoForUpdate productDto)
         {
-            if (product is null)
+            if (productDto is null)
             {
                 return BadRequest(); //400 Status code
             }
 
-            _manager.ProductService.UpdateProduct(id, product, true);
+            _manager.ProductService.UpdateProduct(id, productDto, true);
 
             return NoContent(); //204 Status code
         }

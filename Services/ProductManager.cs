@@ -1,4 +1,6 @@
-﻿using Entities.Exceptions;
+﻿using AutoMapper;
+using Entities.DTOs;
+using Entities.Exceptions;
 using Entities.Models;
 using Repositories.Contracts;
 using Services.Contracts;
@@ -14,11 +16,13 @@ namespace Services
     {
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _logger;
+        private readonly IMapper _mapper;
 
-        public ProductManager(IRepositoryManager manager, ILoggerService logger)
+        public ProductManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper)
         {
             _manager = manager;
             _logger = logger;
+            _mapper = mapper;
         }
 
         public Product CreateProduct(Product product)
@@ -40,9 +44,10 @@ namespace Services
             _manager.Save();
         }
 
-        public IEnumerable<Product> GetAllProducts(bool trackChanges)
+        public IEnumerable<ProductDto> GetAllProducts(bool trackChanges)
         {
-            return _manager.Product.GetAllProducts(trackChanges);
+            var products = _manager.Product.GetAllProducts(trackChanges);
+            return _mapper.Map<IEnumerable<ProductDto>>(products); 
         }
 
         public Product GetById(int id, bool trackChanges)
@@ -55,16 +60,14 @@ namespace Services
             return product;
         }
 
-        public void UpdateProduct(int id, Product product, bool trackChanges)
+        public void UpdateProduct(int id, ProductDtoForUpdate productDto, bool trackChanges)
         {
             var result = _manager.Product.GetById(id, trackChanges);
             if (result is null)
             {
                 throw new ProductNotFoundException(id);
             }
-
-            result.Title=product.Title;
-            result.Price=product.Price;
+            result = _mapper.Map<Product>(productDto);
 
             _manager.Product.Update(result);
             _manager.Save();
