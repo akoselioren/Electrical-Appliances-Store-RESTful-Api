@@ -23,51 +23,60 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public IActionResult GetAllProducts()
+        public async Task<IActionResult> GetAllProductsAsync()
         {
-            var products = _manager.ProductService.GetAllProducts(false);
+            var products = await _manager.ProductService.GetAllProductsAsync(false);
             return Ok(products);
 
         }
 
         [HttpGet("{id:int}")]
-        public IActionResult GetByIdProduct([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> GetByIdProductAsync([FromRoute(Name = "id")] int id)
         {
-            var product = _manager.ProductService.GetById(id, false);
+            var product = await _manager.ProductService.GetByIdAsync(id, false);
 
             
             return Ok(product);
         }
 
         [HttpPost]
-        public IActionResult CreateProduct([FromBody] Product product)
+        public async Task<IActionResult> CreateProductAsync([FromBody] ProductDtoForInsertion productDto)
         {
-            if (product is null)
+            if (productDto is null)
             {
-                return BadRequest();
+                return BadRequest(); // 400 Status Code
             }
-            _manager.ProductService.CreateProduct(product);
+
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState);
+            }
+            var product = await _manager.ProductService.CreateProductAsync(productDto);
 
             return StatusCode(201, product);
         }
 
         [HttpPut("{id:int}")]
-        public IActionResult UpdateProduct([FromRoute(Name = "id")] int id, [FromBody] ProductDtoForUpdate productDto)
+        public async Task<IActionResult> UpdateProductAsync([FromRoute(Name = "id")] int id, [FromBody] ProductDtoForUpdate productDto)
         {
             if (productDto is null)
             {
                 return BadRequest(); //400 Status code
             }
+            if (!ModelState.IsValid)
+            {
+                return UnprocessableEntity(ModelState); //422 Status code
+            }
 
-            _manager.ProductService.UpdateProduct(id, productDto, true);
+            await _manager.ProductService.UpdateProductAsync(id, productDto, false);
 
             return NoContent(); //204 Status code
         }
 
         [HttpDelete("{id:int}")]
-        public IActionResult DeleteProduct([FromRoute(Name = "id")] int id)
+        public async Task<IActionResult> DeleteProductAsync([FromRoute(Name = "id")] int id)
         {
-            _manager.ProductService.DeleteProduct(id, false);
+            await _manager.ProductService.DeleteProductAsync(id, false);
             return NoContent();
         }
     }

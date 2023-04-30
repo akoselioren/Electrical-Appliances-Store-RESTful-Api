@@ -1,19 +1,13 @@
 ﻿using Entities.DTOs;
-using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Services.Contracts
 {
     public interface IProductService
     {
-        IEnumerable<ProductDto> GetAllProducts(bool trackChanges);
-        Product GetById(int id, bool trackChanges);
-        Product CreateProduct(Product product);
-        void UpdateProduct(int id, ProductDtoForUpdate productDto, bool trackChanges);
-        void DeleteProduct(int id, bool trackChanges);
+        Task<IEnumerable<ProductDto>> GetAllProductsAsync(bool trackChanges);
+        Task<ProductDto> GetByIdAsync(int id, bool trackChanges);
+        Task<ProductDto> CreateProductAsync(ProductDtoForInsertion product);
+        Task UpdateProductAsync(int id, ProductDtoForUpdate productDto, bool trackChanges);
+        Task DeleteProductAsync(int id, bool trackChanges);
     }
 }

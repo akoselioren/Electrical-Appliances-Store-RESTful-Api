@@ -1,4 +1,5 @@
 ﻿using Entities.Models;
+using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
 using System;
 using System.Collections.Generic;
@@ -17,9 +18,9 @@ namespace Repositories.EFCore
         public void CreateProduct(Product product) => Create(product);
 
         public void DeleteProduct(Product product) => Delete(product);
-        public IQueryable<Product> GetAllProducts(bool trackChanges) => GetAll(trackChanges).OrderBy(p=>p.Id);
+        public async Task<IEnumerable<Product>> GetAllProductsAsync(bool trackChanges) => await GetAll(trackChanges).OrderBy(p=>p.Id).ToListAsync();
 
-        public Product GetById(int id, bool trackChanges) => GetById(p=>p.Id.Equals(id),trackChanges).SingleOrDefault();
+        public async Task<Product> GetByIdAsync(int id, bool trackChanges) => await GetById(p=>p.Id.Equals(id),trackChanges).SingleOrDefaultAsync();
 
         public void UpdateProduct(Product product) => Update(product);
     }

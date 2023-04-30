@@ -75,3 +75,21 @@
 2023-04-27 23:52:15.1826 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Oren\source\repos\ElectricalAppliancesStore\WebApi\nlog.config
 2023-04-27 23:53:03.2972 Info AppDomain Shutting down. LogFactory closing...
 2023-04-27 23:53:03.3182 Info LogFactory has been closed.
+2023-04-30 12:56:30.2845 Info Message Template Auto Format enabled
+2023-04-30 12:56:30.4857 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-04-30 12:56:30.5279 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Oren\source\repos\ElectricalAppliancesStore\WebApi\nlog.config
+2023-04-30 13:03:41.9265 Info AppDomain Shutting down. LogFactory closing...
+2023-04-30 13:03:41.9453 Info LogFactory has been closed.
+2023-04-30 13:03:50.5426 Info Message Template Auto Format enabled
+2023-04-30 13:03:50.6271 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-04-30 13:03:50.6575 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Oren\source\repos\ElectricalAppliancesStore\WebApi\nlog.config
+2023-04-30 13:05:37.0348 Info AppDomain Shutting down. LogFactory closing...
+2023-04-30 13:05:37.0525 Info LogFactory has been closed.
+2023-04-30 13:05:45.0384 Info Message Template Auto Format enabled
+2023-04-30 13:05:45.1189 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-04-30 13:05:45.1469 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Oren\source\repos\ElectricalAppliancesStore\WebApi\nlog.config
+2023-04-30 17:34:40.6501 Info AppDomain Shutting down. LogFactory closing...
+2023-04-30 17:34:40.6992 Info LogFactory has been closed.
+2023-04-30 18:40:37.1980 Info Message Template Auto Format enabled
+2023-04-30 18:40:37.3355 Info Registered target NLog.Targets.FileTarget(Name=logfile)
+2023-04-30 18:40:37.3954 Info Validating config: TargetNames=logfile, ConfigItems=12, FilePath=C:\Users\Oren\source\repos\ElectricalAppliancesStore\WebApi\nlog.config

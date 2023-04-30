@@ -2,7 +2,7 @@
 {
     public sealed class ProductNotFoundException : NotFoundException
     {
-        public ProductNotFoundException(int id) : base($"The product with id : {id} could not found.")
+        public ProductNotFoundException(int id) : base($"Hata : İşlem Yapmak istediğniz id'si : {id} 'olan ürün bulunamadı.")
         {
 
         }
