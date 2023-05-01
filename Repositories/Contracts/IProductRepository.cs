@@ -1,16 +1,11 @@
 ﻿using Entities.Models;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
+using Entities.RequestFeatures;
 
 namespace Repositories.Contracts
 {
     public interface IProductRepository : IRepositoryBase<Product>
     {
-        Task<IEnumerable<Product>> GetAllProductsAsync(bool trackChanges);
+        Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges);
         Task<Product> GetByIdAsync(int id, bool trackChanges);
 
         void CreateProduct(Product product);

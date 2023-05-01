@@ -1,16 +1,20 @@
 ﻿using Entities.DTOs;
 using Entities.Exceptions;
 using Entities.Models;
+using Entities.RequestFeatures;
 using Microsoft.AspNetCore.Mvc;
+using Presentation.ActionFilters;
 using Services.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
+    [ServiceFilter(typeof(LogFilterAttribute))]
     [ApiController]
     [Route("api/products")]
     public class ProductController : ControllerBase
@@ -23,10 +27,13 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetAllProductsAsync()
+        public async Task<IActionResult> GetAllProductsAsync([FromQuery] ProductParameters productParameters)
         {
-            var products = await _manager.ProductService.GetAllProductsAsync(false);
-            return Ok(products);
+            var pagedResult = await _manager.ProductService.GetAllProductsAsync(productParameters, false);
+
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+
+            return Ok(pagedResult.products);
 
         }
 
@@ -39,23 +46,16 @@ namespace Presentation.Controllers
             return Ok(product);
         }
 
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost]
         public async Task<IActionResult> CreateProductAsync([FromBody] ProductDtoForInsertion productDto)
         {
-            if (productDto is null)
-            {
-                return BadRequest(); // 400 Status Code
-            }
-
-            if (!ModelState.IsValid)
-            {
-                return UnprocessableEntity(ModelState);
-            }
             var product = await _manager.ProductService.CreateProductAsync(productDto);
 
             return StatusCode(201, product);
         }
 
+        [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateProductAsync([FromRoute(Name = "id")] int id, [FromBody] ProductDtoForUpdate productDto)
         {
