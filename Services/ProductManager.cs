@@ -5,6 +5,7 @@ using Entities.Models;
 using Entities.RequestFeatures;
 using Repositories.Contracts;
 using Services.Contracts;
+using static Entities.Exceptions.BadRequestException;
 
 namespace Services
 {
@@ -38,6 +39,12 @@ namespace Services
 
         public async Task<(IEnumerable<ProductDto> products, MetaData metaData)> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges)
         {
+
+            if (!productParameters.ValidPriceRange)
+            {
+                throw new PriceOutofRangeBadRequestException();
+            }
+
             var productsWithMetaData = await _manager.Product.GetAllProductsAsync(productParameters, trackChanges);
             var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMetaData);
             return (productsDto, productsWithMetaData.MetaData);

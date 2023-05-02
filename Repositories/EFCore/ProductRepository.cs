@@ -2,15 +2,11 @@
 using Entities.RequestFeatures;
 using Microsoft.EntityFrameworkCore;
 using Repositories.Contracts;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Repositories.Extensions;
 
 namespace Repositories.EFCore
 {
-    public class ProductRepository : RepositoryBase<Product>, IProductRepository
+    public sealed class ProductRepository : RepositoryBase<Product>, IProductRepository
     {
         public ProductRepository(RepositoryContext context) : base(context)
         {
@@ -22,7 +18,9 @@ namespace Repositories.EFCore
         public async Task<PagedList<Product>> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges)
         {
             var products = await GetAll(trackChanges)
-                .OrderBy(p => p.Id)
+                .FilterProducts(productParameters.MinPrice, productParameters.MaxPrice)
+                .Search(productParameters.SearchTerm)
+                .Sort(productParameters.OrderBy)
                 .ToListAsync();
 
             return PagedList<Product>
