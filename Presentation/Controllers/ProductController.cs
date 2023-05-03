@@ -27,13 +27,22 @@ namespace Presentation.Controllers
         }
 
         [HttpGet]
+        [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetAllProductsAsync([FromQuery] ProductParameters productParameters)
         {
-            var pagedResult = await _manager.ProductService.GetAllProductsAsync(productParameters, false);
+            var linkParameters = new LinkParameters()
+            {
+                ProductParameters = productParameters,
+                HttpContext = HttpContext
+            };
 
-            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(pagedResult.metaData));
+            var result = await _manager.ProductService.GetAllProductsAsync(linkParameters, false);
 
-            return Ok(pagedResult.products);
+            Response.Headers.Add("X-Pagination", JsonSerializer.Serialize(result.metaData));
+
+            return result.linkResponse.HasLinks ?
+                Ok(result.linkResponse.LinkedEntities) :
+                Ok(result.linkResponse.ShapedEntities);
 
         }
 
@@ -42,7 +51,7 @@ namespace Presentation.Controllers
         {
             var product = await _manager.ProductService.GetByIdAsync(id, false);
 
-            
+
             return Ok(product);
         }
 

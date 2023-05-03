@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using Entities.DTOs;
 using Entities.Exceptions;
+using Entities.LinkModels;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Repositories.Contracts;
 using Services.Contracts;
+using System.Dynamic;
 using static Entities.Exceptions.BadRequestException;
 
 namespace Services
@@ -14,12 +16,14 @@ namespace Services
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
+        private readonly IProductLinks _productsLinks;
 
-        public ProductManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper)
+        public ProductManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IProductLinks productsLinks)
         {
             _manager = manager;
             _logger = logger;
             _mapper = mapper;
+            _productsLinks = productsLinks;
         }
 
         public async Task<ProductDto> CreateProductAsync(ProductDtoForInsertion productDto)
@@ -37,17 +41,19 @@ namespace Services
             await _manager.SaveAsync();
         }
 
-        public async Task<(IEnumerable<ProductDto> products, MetaData metaData)> GetAllProductsAsync(ProductParameters productParameters, bool trackChanges)
+        public async Task<(LinkResponse linkResponse, MetaData metaData)> GetAllProductsAsync(LinkParameters linkParameters, bool trackChanges)
         {
 
-            if (!productParameters.ValidPriceRange)
+            if (!linkParameters.ProductParameters.ValidPriceRange)
             {
                 throw new PriceOutofRangeBadRequestException();
             }
 
-            var productsWithMetaData = await _manager.Product.GetAllProductsAsync(productParameters, trackChanges);
+            var productsWithMetaData = await _manager.Product.GetAllProductsAsync(linkParameters.ProductParameters, trackChanges);
             var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMetaData);
-            return (productsDto, productsWithMetaData.MetaData);
+            var links = _productsLinks.TryGenerateLinks(productsDto,linkParameters.ProductParameters.Fields,linkParameters.HttpContext);
+
+            return (links, productsWithMetaData.MetaData);
         }
 
         public async Task<ProductDto> GetByIdAsync(int id, bool trackChanges)
