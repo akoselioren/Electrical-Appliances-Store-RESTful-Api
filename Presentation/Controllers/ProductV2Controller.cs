@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
-    [ApiVersion("2.0", Deprecated = true)]
+    //[ApiVersion("2.0", Deprecated = true)]
     [ApiController]
     [Route("api/products")]
     public class ProductV2Controller : ControllerBase
