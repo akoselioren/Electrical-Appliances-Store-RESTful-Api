@@ -28,6 +28,13 @@ namespace Repositories.EFCore
                 productParameters.PageSize);
         }
 
+        public async Task<List<Product>> GetAllProductsAsync(bool trackChanges)
+        {
+            return await GetAll(trackChanges)
+                .OrderBy(p => p.Id)
+                .ToListAsync();
+        }
+
         public async Task<Product> GetByIdAsync(int id, bool trackChanges) => await GetById(p => p.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
 
         public void UpdateProduct(Product product) => Update(product);

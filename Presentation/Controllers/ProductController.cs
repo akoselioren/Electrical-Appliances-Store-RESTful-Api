@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 
 namespace Presentation.Controllers
 {
+    [ApiVersion("1.0")]
     [ServiceFilter(typeof(LogFilterAttribute))]
     [ApiController]
     [Route("api/products")]
@@ -26,7 +27,8 @@ namespace Presentation.Controllers
             _manager = manager;
         }
 
-        [HttpGet]
+        [HttpHead]
+        [HttpGet(Name = "GetAllProductsAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
         public async Task<IActionResult> GetAllProductsAsync([FromQuery] ProductParameters productParameters)
         {
@@ -56,7 +58,7 @@ namespace Presentation.Controllers
         }
 
         [ServiceFilter(typeof(ValidationFilterAttribute))]
-        [HttpPost]
+        [HttpPost(Name = "CreateProductAsync")]
         public async Task<IActionResult> CreateProductAsync([FromBody] ProductDtoForInsertion productDto)
         {
             var product = await _manager.ProductService.CreateProductAsync(productDto);
@@ -87,6 +89,13 @@ namespace Presentation.Controllers
         {
             await _manager.ProductService.DeleteProductAsync(id, false);
             return NoContent();
+        }
+
+        [HttpOptions]
+        public IActionResult GetProductOptions()
+        {
+            Response.Headers.Add("Allow", "GET, PUT, POST, DELETE, HEAD, OPTIONS");
+            return Ok();
         }
     }
 }
