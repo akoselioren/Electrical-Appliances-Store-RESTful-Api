@@ -2,6 +2,7 @@
 using Entities.Exceptions;
 using Entities.Models;
 using Entities.RequestFeatures;
+using Marvin.Cache.Headers;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Services.Contracts;
@@ -18,6 +19,8 @@ namespace Presentation.Controllers
     [ServiceFilter(typeof(LogFilterAttribute))]
     [ApiController]
     [Route("api/products")]
+    //[ResponseCache(CacheProfileName ="5mins")]
+    //[HttpCacheExpiration(CacheLocation = CacheLocation.Public, MaxAge =80)]
     public class ProductController : ControllerBase
     {
         private readonly IServiceManager _manager;
@@ -30,6 +33,7 @@ namespace Presentation.Controllers
         [HttpHead]
         [HttpGet(Name = "GetAllProductsAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
+        //[ResponseCache(Duration = 60)]
         public async Task<IActionResult> GetAllProductsAsync([FromQuery] ProductParameters productParameters)
         {
             var linkParameters = new LinkParameters()
