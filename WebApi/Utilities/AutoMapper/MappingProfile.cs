@@ -11,6 +11,7 @@ namespace WebApi.Utilities.AutoMapper
             CreateMap<ProductDtoForUpdate, Product>();
             CreateMap<Product, ProductDto>();
             CreateMap<ProductDtoForInsertion, Product>();
+            CreateMap<UserForRegistrationDto, User>();
         }
     }
 }

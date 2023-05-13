@@ -1,9 +1,6 @@
 using AspNetCoreRateLimit;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using NLog;
-using Presentation.ActionFilters;
-using Repositories.EFCore;
 using Services;
 using Services.Contracts;
 using WebApi.Extensions;
@@ -51,6 +48,9 @@ builder.Services.AddMemoryCache();
 builder.Services.ConfigureRateLimitingOptions();
 builder.Services.AddHttpContextAccessor();
 
+builder.Services.AddAuthentication();
+builder.Services.ConfigureIdentity();
+
 var app = builder.Build();
 
 var logger = app.Services.GetRequiredService<ILoggerService>();
@@ -75,6 +75,8 @@ app.UseCors("CorsPolicy");
 app.UseResponseCaching();
 
 app.UseHttpCacheHeaders();
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

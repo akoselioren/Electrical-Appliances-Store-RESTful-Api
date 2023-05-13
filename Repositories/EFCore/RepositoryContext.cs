@@ -1,16 +1,11 @@
 ﻿using Entities.Models;
+using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Reflection.Emit;
-using System.Text;
-using System.Threading.Tasks;
-using WebApi.Repositories.Config;
+using System.Reflection;
 
 namespace Repositories.EFCore
 {
-    public class RepositoryContext : DbContext
+    public class RepositoryContext : IdentityDbContext<User>
     {
         public RepositoryContext(DbContextOptions options) : base(options)
         {
@@ -21,7 +16,10 @@ namespace Repositories.EFCore
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfiguration(new ProductConfig());
+            base.OnModelCreating(modelBuilder);
+            //modelBuilder.ApplyConfiguration(new ProductConfig());
+            //modelBuilder.ApplyConfiguration(new RoleConfiguration());
+            modelBuilder.ApplyConfigurationsFromAssembly(Assembly.GetExecutingAssembly());
         }
     }
 }
