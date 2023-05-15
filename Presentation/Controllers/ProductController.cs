@@ -3,6 +3,7 @@ using Entities.Exceptions;
 using Entities.Models;
 using Entities.RequestFeatures;
 using Marvin.Cache.Headers;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Presentation.ActionFilters;
 using Services.Contracts;
@@ -30,6 +31,7 @@ namespace Presentation.Controllers
             _manager = manager;
         }
 
+        [Authorize]
         [HttpHead]
         [HttpGet(Name = "GetAllProductsAsync")]
         [ServiceFilter(typeof(ValidateMediaTypeAttribute))]
@@ -52,6 +54,7 @@ namespace Presentation.Controllers
 
         }
 
+        [Authorize]
         [HttpGet("{id:int}")]
         public async Task<IActionResult> GetByIdProductAsync([FromRoute(Name = "id")] int id)
         {
@@ -61,6 +64,7 @@ namespace Presentation.Controllers
             return Ok(product);
         }
 
+        [Authorize(Roles = "Editor, Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost(Name = "CreateProductAsync")]
         public async Task<IActionResult> CreateProductAsync([FromBody] ProductDtoForInsertion productDto)
@@ -70,6 +74,7 @@ namespace Presentation.Controllers
             return StatusCode(201, product);
         }
 
+        [Authorize(Roles = "Editor, Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPut("{id:int}")]
         public async Task<IActionResult> UpdateProductAsync([FromRoute(Name = "id")] int id, [FromBody] ProductDtoForUpdate productDto)
@@ -87,7 +92,7 @@ namespace Presentation.Controllers
 
             return NoContent(); //204 Status code
         }
-
+        [Authorize(Roles = "Admin")]
         [HttpDelete("{id:int}")]
         public async Task<IActionResult> DeleteProductAsync([FromRoute(Name = "id")] int id)
         {
@@ -95,6 +100,7 @@ namespace Presentation.Controllers
             return NoContent();
         }
 
+        [Authorize]
         [HttpOptions]
         public IActionResult GetProductOptions()
         {
