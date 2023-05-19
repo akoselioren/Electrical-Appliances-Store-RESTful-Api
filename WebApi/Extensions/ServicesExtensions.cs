@@ -9,12 +9,14 @@ using Microsoft.AspNetCore.Mvc.Formatters;
 using Microsoft.AspNetCore.Mvc.Versioning;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
 using Presentation.ActionFilters;
 using Presentation.Controllers;
 using Repositories.Contracts;
 using Repositories.EFCore;
 using Services;
 using Services.Contracts;
+using System.Reflection;
 using System.Text;
 
 namespace WebApi.Extensions
@@ -172,7 +174,7 @@ namespace WebApi.Extensions
             {
                 opt.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
                 opt.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
-            }).AddJwtBearer(options => 
+            }).AddJwtBearer(options =>
             options.TokenValidationParameters = new TokenValidationParameters
             {
                 ValidateIssuer = true,
@@ -185,5 +187,58 @@ namespace WebApi.Extensions
             }
             );
         }
+
+        public static void ConfigureSwagger(this IServiceCollection services)
+        {
+            services.AddSwaggerGen(swg =>
+            {
+                swg.SwaggerDoc("v1", 
+                    new OpenApiInfo 
+                    {
+                        Title = "Electrical Appliances Store", 
+                        Version = "v1",
+                        Description = "Electrical Appliances Store ASP.NET Core Web API ",
+                        TermsOfService = new Uri("https://github.com/akoselioren"),
+                        Contact = new OpenApiContact
+                        {
+                            Name = "Abdullah KOSELIOREN",
+                            Email = "abdullahoren1@gmail.com",
+                            Url = new Uri("https://github.com/akoselioren")
+                        }
+                    });
+                swg.SwaggerDoc("v2", 
+                    new OpenApiInfo 
+                    { 
+                        Title = "Electrical Appliances Store", 
+                        Version = "v2" 
+                    });
+                swg.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+                {
+                    In = ParameterLocation.Header,
+                    Description = "Place to add JWT with Bearer",
+                    Name = "Authorization",
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                swg.AddSecurityRequirement(new OpenApiSecurityRequirement()
+                {
+                    {
+                    new OpenApiSecurityScheme
+                    {
+                        Reference = new OpenApiReference
+                        {
+                            Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                        },
+                        Name = "Bearer"
+                    },
+                    new List<string>()
+
+                    }
+                });
+            });
+        }
+
     }
 }

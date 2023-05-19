@@ -11,6 +11,7 @@ namespace Presentation.Controllers
     //[ApiVersion("2.0", Deprecated = true)]
     [ApiController]
     [Route("api/products")]
+    [ApiExplorerSettings(GroupName ="v2")]
     public class ProductV2Controller : ControllerBase
     {
         private readonly IServiceManager _manager;
