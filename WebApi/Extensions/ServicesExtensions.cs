@@ -240,5 +240,18 @@ namespace WebApi.Extensions
             });
         }
 
+        public static void RegisterRepositories(this IServiceCollection services)
+        {
+            services.AddScoped<IProductRepository, ProductRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+        }
+
+        public static void RegisterServices(this IServiceCollection services)
+        {
+            services.AddScoped<IProductService, ProductManager>();
+            services.AddScoped<ICategoryService, CategoryManager>();
+            services.AddScoped<IAuthenticationService, AuthenticationManager>();
+        }
+
     }
 }

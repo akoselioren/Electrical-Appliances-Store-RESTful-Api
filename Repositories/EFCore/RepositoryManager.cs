@@ -10,15 +10,19 @@ namespace Repositories.EFCore
     public class RepositoryManager : IRepositoryManager
     {
         private readonly RepositoryContext _context;
-        private readonly Lazy<IProductRepository> _productRepository;
+        private readonly IProductRepository _productRepository;
+        private readonly ICategoryRepository _categoryRepository;
 
-        public RepositoryManager(RepositoryContext context)
+        public RepositoryManager(RepositoryContext context, IProductRepository productRepository, ICategoryRepository categoryRepository)
         {
             _context = context;
-            _productRepository = new Lazy<IProductRepository>(() =>new ProductRepository(_context));
+            _productRepository = productRepository;
+            _categoryRepository = categoryRepository;
         }
 
-        public IProductRepository Product => _productRepository.Value;
+        public IProductRepository Product => _productRepository;
+
+        public ICategoryRepository Category => _categoryRepository;
 
         public async Task SaveAsync()
         {

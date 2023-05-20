@@ -65,6 +65,15 @@ namespace Presentation.Controllers
             return Ok(product);
         }
 
+        [Authorize]
+        [HttpGet("details")]
+        public async Task<IActionResult> GetAllProductsWithDetailsAsync()
+        {
+            return Ok(await _manager
+                .ProductService
+                .GetAllProductsWithDetailsAsync(false));
+        }
+
         [Authorize(Roles = "Editor, Admin")]
         [ServiceFilter(typeof(ValidationFilterAttribute))]
         [HttpPost(Name = "CreateProductAsync")]

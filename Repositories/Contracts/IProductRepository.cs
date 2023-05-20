@@ -12,5 +12,7 @@ namespace Repositories.Contracts
         void UpdateProduct(Product product);
         void DeleteProduct(Product product);
 
+        Task<IEnumerable<Product>> GetAllProductsWithDetailsAsync(bool trackChanges);
+
     }
 }

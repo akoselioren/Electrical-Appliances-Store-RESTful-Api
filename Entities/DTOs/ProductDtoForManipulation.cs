@@ -14,7 +14,7 @@ namespace Entities.DTOs
         [MaxLength(50, ErrorMessage = "Hata : Başlık alanı en fazla 50 karakter olamalıdır.")]
         public string Title { get; init; }
         [Required(ErrorMessage = "Hata : Ürün fiyat alanı boş geçilemez.")]
-        [Range(10,5000, ErrorMessage = "Hata : Ürün Fiyatı min:10 TL , max:5000 TL olamalıdır.")]
+        [Range(100,20000, ErrorMessage = "Hata : Ürün Fiyatı min:100 TL , max:20000 TL olamalıdır.")]
         public decimal Price { get; init; }
     }
 }

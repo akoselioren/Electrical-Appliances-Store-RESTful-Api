@@ -2,7 +2,6 @@
 using Entities.LinkModels;
 using Entities.Models;
 using Entities.RequestFeatures;
-using System.Dynamic;
 
 namespace Services.Contracts
 {
@@ -15,5 +14,7 @@ namespace Services.Contracts
         Task DeleteProductAsync(int id, bool trackChanges);
 
         Task<List<Product>> GetAllProductsAsync(bool trackChanges);
+
+        Task<IEnumerable<Product>> GetAllProductsWithDetailsAsync(bool trackChanges);
     }
 }

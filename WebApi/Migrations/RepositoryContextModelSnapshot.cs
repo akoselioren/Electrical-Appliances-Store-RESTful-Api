@@ -22,6 +22,40 @@ namespace WebApi.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
 
+            modelBuilder.Entity("Entities.Models.Category", b =>
+                {
+                    b.Property<int>("CategoryId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("CategoryId"), 1L, 1);
+
+                    b.Property<string>("CategoryName")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("CategoryId");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            CategoryId = 1,
+                            CategoryName = "Soğutucular"
+                        },
+                        new
+                        {
+                            CategoryId = 2,
+                            CategoryName = "Isıtıcılar"
+                        },
+                        new
+                        {
+                            CategoryId = 3,
+                            CategoryName = "Ev Temizlik Aletleri"
+                        });
+                });
+
             modelBuilder.Entity("Entities.Models.Product", b =>
                 {
                     b.Property<int>("Id")
@@ -29,6 +63,9 @@ namespace WebApi.Migrations
                         .HasColumnType("int");
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"), 1L, 1);
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("int");
 
                     b.Property<decimal>("Price")
                         .HasColumnType("decimal(18,2)");
@@ -39,24 +76,29 @@ namespace WebApi.Migrations
 
                     b.HasKey("Id");
 
+                    b.HasIndex("CategoryId");
+
                     b.ToTable("Products");
 
                     b.HasData(
                         new
                         {
                             Id = 1,
+                            CategoryId = 1,
                             Price = 275m,
                             Title = "Buzdolabı"
                         },
                         new
                         {
                             Id = 2,
+                            CategoryId = 2,
                             Price = 250m,
                             Title = "Çamaşır Makinası"
                         },
                         new
                         {
                             Id = 3,
+                            CategoryId = 3,
                             Price = 200m,
                             Title = "Bulaşık Makinası"
                         });
@@ -168,22 +210,22 @@ namespace WebApi.Migrations
                     b.HasData(
                         new
                         {
-                            Id = "c95de277-5667-46a6-85cd-cb4a22b510c4",
-                            ConcurrencyStamp = "60edf863-4af9-4b7b-a4e8-a74cd6ecb8f2",
+                            Id = "6a42a623-9aff-4b86-9a1a-70846d33bfaa",
+                            ConcurrencyStamp = "37f9bc35-a9f9-49e7-ba10-416ef8294231",
                             Name = "User",
                             NormalizedName = "USER"
                         },
                         new
                         {
-                            Id = "b56b7d7b-b377-4365-945d-7f6744ff9ecc",
-                            ConcurrencyStamp = "8598654d-09ef-4f38-b4ff-2c76bf513e87",
+                            Id = "0189de47-4e76-4abe-8276-4fc498c48ba6",
+                            ConcurrencyStamp = "ca5630a0-c849-47c9-8aa9-c3437e90bf49",
                             Name = "Editor",
                             NormalizedName = "EDITOR"
                         },
                         new
                         {
-                            Id = "e2e34ccc-9a84-4cfb-b5ca-a2c0114cc1cb",
-                            ConcurrencyStamp = "91ee1efa-8f7b-4930-a6fe-bc86899fe2b3",
+                            Id = "46dfd36e-e089-402c-a702-dbd9acad4a56",
+                            ConcurrencyStamp = "451478d9-fbf6-44fb-828e-d346891547b8",
                             Name = "Admin",
                             NormalizedName = "ADMIN"
                         });
@@ -295,6 +337,17 @@ namespace WebApi.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("Entities.Models.Product", b =>
+                {
+                    b.HasOne("Entities.Models.Category", "Category")
+                        .WithMany("Products")
+                        .HasForeignKey("CategoryId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Category");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.IdentityRole", null)
@@ -344,6 +397,11 @@ namespace WebApi.Migrations
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+                });
+
+            modelBuilder.Entity("Entities.Models.Category", b =>
+                {
+                    b.Navigation("Products");
                 });
 #pragma warning restore 612, 618
         }

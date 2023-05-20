@@ -35,6 +35,15 @@ namespace Repositories.EFCore
                 .ToListAsync();
         }
 
+        public async Task<IEnumerable<Product>> GetAllProductsWithDetailsAsync(bool trackChanges)
+        {
+            return await _context
+                .Products
+                .Include(p => p.Category)
+                .OrderBy(p => p.Id)
+                .ToListAsync();
+        }
+
         public async Task<Product> GetByIdAsync(int id, bool trackChanges) => await GetById(p => p.Id.Equals(id), trackChanges).SingleOrDefaultAsync();
 
         public void UpdateProduct(Product product) => Update(product);

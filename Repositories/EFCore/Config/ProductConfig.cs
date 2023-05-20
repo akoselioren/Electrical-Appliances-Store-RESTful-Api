@@ -8,9 +8,9 @@ namespace WebApi.Repositories.Config
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.HasData(
-                new Product { Id = 1, Title = "Buzdolabı", Price = 275 },
-                new Product { Id = 2, Title = "Çamaşır Makinası", Price = 250 },
-                new Product { Id = 3, Title = "Bulaşık Makinası", Price = 200 }
+                new Product { Id = 1, CategoryId = 1, Title = "Buzdolabı", Price = 275 },
+                new Product { Id = 2, CategoryId = 2, Title = "Çamaşır Makinası", Price = 250 },
+                new Product { Id = 3, CategoryId = 3, Title = "Bulaşık Makinası", Price = 200 }
                 );
         }
     }

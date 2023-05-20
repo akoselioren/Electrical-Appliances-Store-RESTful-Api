@@ -13,22 +13,27 @@ namespace Services
 {
     public class ProductManager : IProductService
     {
+        private readonly ICategoryService _categoryService;
         private readonly IRepositoryManager _manager;
         private readonly ILoggerService _logger;
         private readonly IMapper _mapper;
         private readonly IProductLinks _productsLinks;
 
-        public ProductManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IProductLinks productsLinks)
+        public ProductManager(IRepositoryManager manager, ILoggerService logger, IMapper mapper, IProductLinks productsLinks, ICategoryService categoryService)
         {
             _manager = manager;
             _logger = logger;
             _mapper = mapper;
             _productsLinks = productsLinks;
+            _categoryService = categoryService;
         }
 
         public async Task<ProductDto> CreateProductAsync(ProductDtoForInsertion productDto)
         {
+            var category = await _categoryService.GetCategoryByIdAsync(productDto.CategoryId, false);
+
             var entity = _mapper.Map<Product>(productDto);
+            entity.CategoryId = productDto.CategoryId;
             _manager.Product.CreateProduct(entity);
             await _manager.SaveAsync();
             return _mapper.Map<ProductDto>(entity);
@@ -51,15 +56,22 @@ namespace Services
 
             var productsWithMetaData = await _manager.Product.GetAllProductsAsync(linkParameters.ProductParameters, trackChanges);
             var productsDto = _mapper.Map<IEnumerable<ProductDto>>(productsWithMetaData);
-            var links = _productsLinks.TryGenerateLinks(productsDto,linkParameters.ProductParameters.Fields,linkParameters.HttpContext);
+            var links = _productsLinks.TryGenerateLinks(productsDto, linkParameters.ProductParameters.Fields, linkParameters.HttpContext);
 
             return (links, productsWithMetaData.MetaData);
         }
 
         public async Task<List<Product>> GetAllProductsAsync(bool trackChanges)
         {
-           var products = await _manager.Product.GetAllProductsAsync(trackChanges);
+            var products = await _manager.Product.GetAllProductsAsync(trackChanges);
             return products;
+        }
+
+        public async Task<IEnumerable<Product>> GetAllProductsWithDetailsAsync(bool trackChanges)
+        {
+            return await _manager
+                .Product
+                .GetAllProductsWithDetailsAsync(trackChanges);
         }
 
         public async Task<ProductDto> GetByIdAsync(int id, bool trackChanges)

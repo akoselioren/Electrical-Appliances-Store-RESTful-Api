@@ -10,17 +10,21 @@ namespace Services
 {
     public class ServiceManager : IServiceManager
     {
-        private readonly Lazy<IProductService> _productService;
-        private readonly Lazy<IAuthenticationService> _authenticationService;
-        public ServiceManager(IRepositoryManager repositoryManager, ILoggerService logger, IMapper mapper, UserManager<User> userManager, IProductLinks productLinks, IConfiguration configuration)
-        {
-            _productService = new Lazy<IProductService>(() =>
-            new ProductManager(repositoryManager, logger, mapper, productLinks));
-            _authenticationService = new Lazy<IAuthenticationService>(() =>
-            new AuthenticationManager(logger,mapper,userManager, configuration));
-        }
-        public IProductService ProductService => _productService.Value;
+        private readonly IProductService _productService;
+        private readonly ICategoryService _categoryService;
+        private readonly IAuthenticationService _authenticationService;
 
-        public IAuthenticationService AuthenticationService => _authenticationService.Value;
+        public ServiceManager(IProductService productService, ICategoryService categoryService, IAuthenticationService authenticationService)
+        {
+            _productService = productService;
+            _categoryService = categoryService;
+            _authenticationService = authenticationService;
+        }
+
+        public IProductService ProductService => _productService;
+
+        public IAuthenticationService AuthenticationService => _authenticationService;
+
+        public ICategoryService CategoryService => _categoryService;
     }
 }
