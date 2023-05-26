@@ -1,10 +1,13 @@
 <h1 align="center">🌟 Electrical Appliances Store RESTful Web Api 🌟</h1>
-<br>
 <p>🟢Proje hakkında özet bilgi :</p>
 <p>• Gelişmiş ve olgunlaşmış bir Web Api için içinde barındırdığı sayfalama, filtreleme, sıralama ve içerik pazarlığı olmak üzere Api güvenliği, 
  ön belleğe alma, hız sınırlandırma gibi pek çok yapıyı içinde barındıran ileri düzey bir Web Api geliştirdim.</p>
 <p>• Web api için Asp.Net Core 6.0 Versionunu kullanarak Katmanlı mimari üzerinde projeyi oluşturup, geliştirdim.</p>
 <p>• Projenin geniş kapsamlı anlatımını yalın ve güncel bir şekilde aşağıda yaparak görseller ile destekledim, hızlı bir şekilde inceleyebilirsiniz.</p>
+<br>
+
+![Resttasarım](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/34c452fc-bfc7-4fd3-b235-80c664ebd182)
+
 <br>
 <h1 align="center">🟠 Proje Görselleri ve Açıklamaları 🟠</h1>
 <br>
@@ -136,7 +139,7 @@
 <p>• Sayfalama kısaca Api'den dönen Response'lerin kısmi olarak alınmasıdır. RESTful Api tasarımı için önemli bir özelliktir.</p>
 <p>• İstediğimiz datalar çok büyük bir şekilde tutuluyor olabilir fakat bize sadece bazı datalar gerekli ise bu dataların hepsini 
   çağırmamız sunucu ve istemci açısından zaman olarak maaliyet oluşturcaktır, ama sayfalama yaparak veriyi parça parça halinde görüntüleyebilmekteyiz.</p>
-<p>🟢 10.1 - Put Validation işlemi Title Validation Hatası </p>
+<p>🟢 10.1 - Sayfalama işlemleri </p>
 <br> 
   <p>• Resimdede görüdüğü gibi pageNumber vererek hangi sayfayı görmek istediğimizi belirtmiş oluyoruz.</p>
   <p>• pageSize özelliği ile bir sayfada kaç adat veri olacağını belirliyoruz.</p>
@@ -145,7 +148,7 @@
 ![10_1](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/1998e3e1-07a2-488f-a09c-7c8229f4e058)
   
 <br>
-<p>🟢 10.2 - Put Validation işlemi Title Validation Hatası </p>
+<p>🟢 10.2 - Sayfa Detay bilgisi </p>
 <br>
   <p>• CurrentPage: Bulunduğumuz sayfa</p>
   <p>• TotalPage: Toplam sayfa sayısı</p>
@@ -168,37 +171,159 @@
 
 <br>
 <h2>🔶 12 - Arama (Searching) </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+<p>• Arama bir terim ya da anahtar değer yardımıyla uygulama içerisindeki en alakalı sonuçları döndürmek üzere uygulanan bir işlevdir.</p>
+<p>• Arama işlemi duruma göre bir kaynak yada birden fazla kaynak üzerinde yapılabilir.</p>
+<p>• Aranan kelime büyük küçük harf'e duyarsızdır, kelime ve datalar bu şekilde karşılaştırılır.</p>
+<br>
+
+![11search](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/ebac3308-2781-4c77-8ddd-383afc4b7d0b)
+
 <br>
 <h2>🔶 13 - Sıralama (Sorting) </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+<p>• Sorting query string parametreleri yardımıyla tercih edilen bir yolla sonuçların sıralanması işlevidir.</p>
+<p>• OrderBy query string ile DESC yada ASC olarak sıralama yapılabilir.</p>
+<br>
+<p>🟢 13.1 - Büyükten küçüğe doğru(DESC) sıralama </p>
+<br>
+  
+![12short](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/aebef200-bba4-42b0-ace2-48011ccb74b5)
+
+<br>
+<p>🟢 13.2 - Küçükten büyüğe doğru(ASC) sıralama </p>
+<br>
+  
+![12short2](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/600c2c89-91bf-407f-b47b-1d92fcd6cdd2)
+
 <br>
 <h2>🔶 14 - Veri Şekillendirme (Data Shaping) </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+<p>• Data Shaping API tüketicisinin, sorgu dizesi aracılığıyla talep ettiği nesnenin alanlarını seçerek sonuç setini şekillendirmesini sağlar.</p>
+<p>• API tasarımı ve ihtiyacına göre eklenebilir. </p>
+<br>
+
+![14_2](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/3136eb53-141b-418e-bd1b-4f42def65132)
+
 <br>
 <h2>🔶 15 - HATEOAS </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+<p>• Bir rest servisinin response üzerinden tüm içerik bilgilerini görebildiğimiz başka bir kaynağa ya da dökümana gerek kalmadan kullanabilmeye olanak sağlayan bir araçtır. Örnek verecek olursam bir kişinin kaydını getirmek için rest üzerinden gelen cevabın içerisinde o restin diğer yapabileceği tüm yeteneklerinde görülebileceği bir yapı sağlamaktadır. Projemizde başka Rest işlemleri eklediysek silme, güncelleme gibi işlemleri yapabilmek için hangi rest yolunun kullanılması gerektiği gibi bilgileri görüntüler.</p>
+<p>• İyi geliştirilmiş bir API başlangıçta Hyper Media desteği sunmamış olsada sonradan kolaylıkla projeye dahil edilebilir.</p>
+<p>• Hyper Media destegi vermek zorunlu değildir API'nin ihtiyacı var ise duruma göre proje'ye dahil edilmelidir.</p>
 <br>
-<h2>🔶 16 - HEAD ve OPTIONS </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+
+![15](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/380e9b23-b3d1-4712-a946-c52c54037319)
+
 <br>
-<h2>🔶 17 - Kök Belge (Root Documentation) </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+<h2>🔶 16 - Versiyonlama (Versioning) </h2>
+<p>• API geliştirilirken gelişim sürecinde her ne kadar iş odaklı bir çalışma gerçekleştiriyor olsakta, öngörülemeyen yada sonradan ortaya çıkan ihtiyaçlar ile API' ımızı daha fazla sorumluluk eklememiz gerekebilmektedir. İşte böyle bir durumda yapılan değişikliklerde API'ların istemciler üzerindeki etkisini yönetebilmek ve operasyonel olarak gerçekleştirilen çalışmayı raporlayabilmek için her bir güncelleme neticesinde API’ları versiyonlamamız gerekmektedir.</p>
 <br>
-<h2>🔶 18 - Versiyonlama (Versioning) </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+<p>🟢 16.1 - Controller Route ile v1 Versiyonlama </p>
 <br>
-<h2>🔶 19 - Önbelleğe Alma (Caching) </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+  
+![18v1](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/6a1933eb-19a2-448c-9c4b-aee3b4933d06)
+
 <br>
-<h2>🔶 20 - Hız Sınırlama ve Kısıtlama (Rate Limit and Throttling) </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+<p>🟢 16.2 - Controller Route ile v2 Versiyonlama </p>
 <br>
-<h2>🔶 21 - JWT, Identity ve Refresh Token </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+  
+![18v2](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/495af3e7-859d-43e5-ad19-98429b3b7abe)
+
 <br>
-<h2>🔶 22 - API Dokümantasyonu (API Documentation) </h2>
-<p>• Güncelleniyor, yüklenecek.</p>
+<p>🟢 16.3 - Header ile 1.0 Versiyonlama </p>
+<br>
+  
+![18v1_header](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/e14e7173-ac64-4581-9cd5-4965464c7dc2)
+
+<br>
+<p>🟢 16.4 - Header ile 2.0 Versiyonlama </p>
+<br>
+  
+![18v2_header](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/e9299e5c-71ce-4e66-86c8-f11e96bd1e49)
+
+<br>
+<h2>🔶 17 - Önbelleğe Alma (Caching) </h2>
+<p>• Bir Api'nin hem kalitesini ve hemde performansını artırmak ihtiyacı duyuyorsak temel nitekiklerden biride Api'nin veriyi ön belleğe alma mekanizmasını işleterek bu niteliğe sahip olmasıdır.</p>
+<p>• Caching, özet olarak gerekli isteklerin ayırt edilebilmesidir.</p>
+<p>• REST mimarisi üzerinde Client ile Server arasındaki Requestlerde Cache mekanizması ile ilk kez gönderdiği 
+ Request'ten sonra veri Cache'de tutulmaya başlanır, aynı Request tekrar atıldığında Server ile iletişime geçilmeden eğer belirlediğimiz belli süreyi(Cache-control: max-age:) aşmadıysa Cache mekanizmasından Response edilir. Bu durum Server'ımızın trafiğini azaltmamızda performans olarak çok büyük katkı sağlamaktadır. </p>
+<br>
+<p>• Cache-Control ile  refresh süresini görebiliyoruz.</p>
+<p>• ETag ile cache için Header'da tutulan referans adını görebiliyoruz. </p>
+<p>• Last-Modified : oluşturulduğu tarih.</p>
+<p>• Expires : sonlanacağı tarih tarih.</p>
+<br>
+  
+![19](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/95f2c5c8-4a38-4c5e-bec5-2b1de4f44e10)
+
+<br>
+<h2>🔶 18 - Hız Sınırlama ve Kısıtlama (Rate Limit and Throttling) </h2>
+<p>• Client'dan gelen Requestleri dakikalık olarak belli bir sınırda tutmamızı sağlamaktadır. İstemci'nin isteklerini sınırlayıp serverin trafiğini kontrol altına alarak performans maaliyeti açısından bize çok fayda sağlamaktadır.</p>
+<br>
+<p>• Aşağıdaki resimde de görüldüğü gibi ;</p>
+<p>• X-Rate-Limit-Limit : 1m / istemciye vermiş olduğumuz 1 dk boyunca toplam istek süresidir. </p>
+<p>• X-Rate-Limit-Remaining : İstemciye 1 dk içinde verdiğimiz istek adedi'dir. Bu sayı 1 dk içinde 10 adettir ve Geliştiricinin isteğine göre değiştirilebilir. Süresi dolunca tekrardan yenilenir.</p>
+<p>• X-Rate-Limit-Reset : Burada da istemci istek hakkını doldurmamış olsa dahi bu süre dolunca otomatik olarak resetlenir ve tekrardan 10 adet istek yani Request atabilir.</p>
+<br>
+  
+![20](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/fbe5463a-168f-4c30-83bf-b83c39097442)
+
+<br>
+<p>• Aşağıdaki resimde de görüldüğü gibi ;</p>
+<p>• Burada Request(istek) sınırını dolduran client'a hata mesajı veriyoruz ve bize sunucumuz Status Code: '429 Too Many Requests' cevabı ile dönüş yapıyor.</p>
+<br>
+  
+![20 hata](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/c5dfc553-7c9e-4931-826e-df91afeea3f6)
+
+<br>
+<h2>🔶 19 - JWT, Identity ve Refresh Token </h2>
+<p>• Oturum açma ve yetkilendirme işlemleri için Identity çerçevesini kullanarak bu yapıyı tasarlamış olduk.</p>
+<p>• Role bazlı oturum açma işlemleri için 3 rol belirkedik ve bunlar; </p>
+<p>• Admin, User ve Editör olarak tanımladık. aralarındaki fark ise şöyleki Admin kullanıcısı istediği her yere istek atabiliyorken, User ve Editör kullanıcısı için sadece gerekli yerlere istek atabilmektedirler. </p>
+<br>
+<p>🟢 19.1 - Register işlemi </p>
+<p>• Aşağıdaki resimde görüldüğü gibi yeni kullanıcı kayıt işlemi yapıyoruz ve en alttada rolünü belirliyoruz.</p>
+<p>• Bize Status Code: 201 Created ile dönüş yapıyor, kayıt işlemi başarılı.</p>
+<br>
+  
+![21_yenikayit](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/65f2bd9e-10ef-482d-98e5-1ab6180329d1)
+
+<br>
+<p>🟢 19.2 - Giriş işlemi </p>
+<p>• Aşağıdaki resimde görüldüğü gibi daha önceden oluşturmus oldugum admin kullanıcısı ile sisteme giriş yapıyoruz.</p>
+<p>• Bize Status Code: 200 OK ile dönüş yapıyor, giriş işlemi başarılı.</p>
+<br>
+  
+![21_giriş](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/b1c4a212-4b24-42b1-9669-6e9d1564039c)
+
+<br>
+<p>🟢 19.3 - Kullanıcı girişi yapılmadan Request işlemi </p>
+<p>• Aşağıdaki resimde görüldüğü gibi sistemde hiç aktif olmadan direk request atancı bize sonuçları döndürmüyor.</p>
+<p>• Bize Status Code: 401 Unauthorized ile dönüş yapıyor, giriş işlemi başarısız oluyor ve istek cevap alamıyor.</p>
+<br>
+  
+![21girisyapmalısınhatası](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/c223f76d-0120-450b-b1b0-8314d704926d)
+
+<br>
+<p>🟢 19.4 - Yetkisiz kullanıcının Request işlemi </p>
+<p>• Aşağıdaki resimde görüldüğü gibi yetkisi olmayan kullanıcı 1'nolu ürünün güncelleme işlemini yapmak için istek gönderiyor.</p>
+<p>• Bize Status Code: 403 Forbidden ile dönüş yapıyor, yetkisiz işlem başarısız oluyor ve istek cevap alamıyor.</p>
+<br>
+  
+![21_kullanıcıhata](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/911784d9-2f21-4677-9122-c627d2173750)
+
+<br>
+<p>🟢 19.5 - Refresh Token işlemi </p>
+<p>• Aşağıdaki resimde görüldüğü gibi daha önceden Login olan kullanıcımızın Token süresi dolunca yeniden bizim access token ve refresh token'imizi göndererek süresi yeniliyoruz.</p>
+<p>• Bize Status Code: 200 OK ile dönüş yapıyor, refresh token yenileniyor ve veritabanına ekleniyor.</p>
+<br>
+  
+![21refresh](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/14dd67a4-0412-4b1c-9d43-6894aeb65e7d)
+
+<br>
+<h2>🔶 20 - Veritabanı Diagramı </h2>
+<p>• Veritabanındaki bütün tabloların, kolonların ve tablo ilişkilerinin yapısı aşağıdaki resimde gösterilmiştir.</p>
+<br>
+
+![databaseddiagrams](https://github.com/akoselioren/Electrical-Appliances-Store-RESTful-Api/assets/112801816/b92c5ed7-7f41-46b1-93b9-42ff96f60745)
+
 <br>
 <h1 align="center">🟠 Yararlanılan Kaynaklar 🟠</h1>
 <br>
